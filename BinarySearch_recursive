@@ -1,0 +1,21 @@
+# 2025-12-12 
+
+def binary_search_recursive(S, low, high, target, comparisons = 0):
+    if high >= low:
+        mid = (low + high) // 2
+        comparisons += 1 # 비교 횟수 증가.
+
+        if S[mid] == target:
+            print(f" {mid} 번 인덱스에 있음. {comparisons} 회 비교함")
+            return mid, comparisons
+        elif S[mid] > target:
+            return binary_search_recursive(S, low, mid - 1, target, comparisons)
+        else:
+            return binary_search_recursive(S, mid + 1, high, target, comparisons)
+    else:
+        print(f"없음. {comparisons}회 비교함")
+        return -1, comparisons
+
+S = list(range(100000000))
+target = len(S)
+result = binary_search_recursive(S, 0, len(S) - 1, target)
