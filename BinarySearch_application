@@ -1,0 +1,81 @@
+# 2025-12-12
+
+# 첫 번째 위치 찾기
+def binary_search_recursive_first(arr, low, high, x):
+    if high >= low:
+        mid = (low + high) // 2
+        # mid가 맨 앞이거나, 바로 앞 값이 x보다 작으면 → 첫 번째 위치
+        if (mid == 0 or arr[mid-1] < x) and arr[mid] == x:
+            return mid
+        elif arr[mid] < x:
+            return binary_search_recursive_first(arr, mid + 1, high, x)
+        else:
+            return binary_search_recursive_first(arr, low, mid - 1, x)
+    return None
+
+
+# 마지막 위치 찾기
+def binary_search_recursive_last(arr, low, high, x):
+    if high >= low:
+        mid = (low + high) // 2
+        # mid가 맨 끝이거나, 바로 뒤 값이 x보다 크면 → 마지막 위치
+        if (mid == len(arr) - 1 or x < arr[mid+1]) and arr[mid] == x:  # 수정됨
+            return mid
+        elif arr[mid] > x:  # 수정됨: 부등호 방향
+            return binary_search_recursive_last(arr, low, mid - 1, x)
+        else:
+            return binary_search_recursive_last(arr, mid + 1, high, x)  # 수정됨
+    return None
+
+def find_first_last(arr, x):
+    first = binary_search_recursive_first(arr, 0, len(arr) - 1, x)
+    last = binary_search_recursive_last(arr, 0, len(arr) - 1, x)
+    return first, last
+
+# 테스트
+arr = [1, 2, 4, 4, 4, 4, 4, 7, 9, 10]
+x = 4
+
+first, last = find_first_last(arr, x)
+print(first, last)
+
+first = binary_search_recursive_first(arr, 0, len(arr) - 1, x)
+last = binary_search_recursive_last(arr, 0, len(arr) - 1, x)
+
+print(f"배열: {arr}")
+print(f"찾는 값: {x}")
+print(f"첫 번째 위치: {first}")
+print(f"마지막 위치: {last}")
+
+import random
+arr = [random.randint(1, 100) for _ in  range(200)]
+x = random.choice(arr)
+print("original array: ", arr)
+print("key: ", x)
+print()
+# 퀵 정렬 수행
+def quick_sort(S):
+    if len(S) <= 1:
+        return S
+    pivot = S[len(S) // 2]
+    left_sequence = [x for x in S if x < pivot]      # target → x로 변경
+    middle = [x for x in S if x == pivot]
+    right_sequence = [x for x in S if x > pivot]
+
+    return quick_sort(left_sequence) + middle + quick_sort(right_sequence)
+
+sorted_arr = quick_sort(arr)
+print("Sorted array: ", sorted_arr)
+print()
+
+first, last = find_first_last(sorted_arr, x)
+print(f"First occurrence of {x}: Index {first}")
+print(f"Last occurrence of {x}: Index {last}")
+
+if first is not None and last is not None:
+    count = last - first + 1
+    print(f"{x}의 개수: {count}개")
+
+    # 검증
+    actual_count = sorted_arr.count(x)
+    print(f"실제 개수 (검증): {actual_count}개")
