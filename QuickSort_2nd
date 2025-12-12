@@ -1,0 +1,44 @@
+# 2025-12-12 
+
+import random
+
+# 정렬되지 않은 리스트 생성
+S = [random.randint(1, 1000) for _ in range(100)]
+target = random.choice(S)
+
+print("찾을 값:", target)
+print("Original array:", S)
+
+def quick_sort(S):
+    if len(S) <= 1:
+        return S
+    pivot = S[len(S) // 2]
+    left_sequence = [x for x in S if x < pivot]      # target → x로 변경
+    middle = [x for x in S if x == pivot]
+    right_sequence = [x for x in S if x > pivot]
+
+    return quick_sort(left_sequence) + middle + quick_sort(right_sequence)
+
+sorted_arr = quick_sort(S)
+print("Sorted array:", sorted_arr)  # 추가: 정렬 결과 확인
+
+
+def binary_search_recursive(S, low, high, target, comparisons=0):
+    if high >= low:
+        mid = (low + high) // 2
+        comparisons += 1
+
+        if S[mid] == target:
+            print(f"{mid}번 인덱스에 있음. {comparisons}회 비교함")
+            return mid, comparisons
+        elif S[mid] > target:
+            return binary_search_recursive(S, low, mid - 1, target, comparisons)
+        else:
+            return binary_search_recursive(S, mid + 1, high, target, comparisons)
+    else:
+        print(f"없음. {comparisons}회 비교함")
+        return -1, comparisons
+
+# 이진 탐색 수행
+result, total_comparisons = binary_search_recursive(sorted_arr, 0, len(sorted_arr) - 1, target)
+print(f"결과: 인덱스 {result}, 총 비교 횟수: {total_comparisons}")  # 추가: 결과 활용
