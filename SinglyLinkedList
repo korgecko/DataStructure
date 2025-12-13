@@ -1,0 +1,22 @@
+# SinlgyLinkedList
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+names = ['숙영' , '영희', '철민', '지수', '정수' , '지찬']
+
+# 첫 번째 노드를 생성하여 head로 설정
+head = Node(names[0])
+current = head # current 가 따라가면서 다음 주소의 정보를 얻어올 수 있도록 처음 만들어진 head 정보를 current 의 정보로 초기화
+
+for name in names[1:]: # [0] 은 읽었기 때문에 [1] 부터 읽어가도록 for 의 시작점 설정
+    new_node = Node(name) # 새로 node 생성
+    current.next = new_node # 새롭게 생성된 노드의 정보를 즉 주소를, current 의 링크 필드에 넘겨줌
+    current = new_node
+
+# 연결 리스트 출력
+current = head # 출발 위치 head 정보를 currnet 에 넘겨주고.
+while current:
+    print(current.data, end="->" if current.next else "\n")
+    current = current.next
