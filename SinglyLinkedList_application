@@ -1,0 +1,73 @@
+# 연결 리스트의 노드 클래스
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def append(self, data):
+        new_node = Node(data)  # 새로운 노드 생성
+        if self.head is None:  # 리스트가 비어 있으면
+            self.head = new_node  # 새 노드를 헤드로 설정
+        else:
+            current = self.head
+            while current.next:  # 마지막 노드를 찾을 때까지 순회 current.next == None 이라는 뜻. 
+                current = current.next
+            current.next = new_node  # 마지막 노드의 next가 새 노드를 가리킴
+
+    def insert_at_position(self, index, data):
+        new_node = Node(data)
+        if index == 0:  # 맨 앞에 삽입
+            new_node.next = self.head  # 새 노드의 next가 기존의 헤드를 가리킴
+            self.head = new_node  # 헤드를 새 노드로 변경
+        else:
+            current = self.head
+            for i in range(index - 1):  # 삽입할 위치의 앞 노드까지 이동
+                if current is None:
+                    print("인덱스가 범위를 벗어났습니다.")
+                    return
+                current = current.next
+            new_node.next = current.next  # 새 노드가 다음 노드를 가리키도록 설정
+            current.next = new_node  # 앞 노드가 새 노드를 가리키도록 설정
+
+    def delete_at_position(self, index):
+        if self.head is None:
+            print("리스트가 비어있습니다.")
+            return
+        if index == 0:  # 첫 번째 노드를 삭제
+            self.head = self.head.next  # 첫 번째 노드를 제거하고 다음 노드를 헤드로 설정
+        else:
+            current = self.head
+            for i in range(index - 1):  # 삭제할 노드의 앞 노드까지 이동
+                if current.next is None:
+                    print("인덱스가 범위를 벗어났습니다.")
+                    return
+                current = current.next
+            current.next = current.next.next  # 다음 노드로 건너뛰어 삭제
+
+    # 연결 리스트를 출력하는 함수
+    def display(self):
+        current = self.head
+        while current:  # 리스트 끝까지 순회
+            print(current.data, end=" -> " if current.next else "\n")
+            current = current.next
+
+
+# 테스트
+hospital_reservation = LinkedList()
+
+# 예약 리스트에 추가
+hospital_reservation.append("김철수 - 복통")
+hospital_reservation.append("이영희 - 몸살")
+hospital_reservation.append("박민수 - 두통")
+hospital_reservation.display()
+hospital_reservation.insert_at_position(1, "최민호 - 응급 수술")
+hospital_reservation.display()
+hospital_reservation.delete_at_position(2)
+hospital_reservation.display()
+hospital_reservation.insert_at_position(0, "데이빗 - 응급 처치")
+hospital_reservation.display()
